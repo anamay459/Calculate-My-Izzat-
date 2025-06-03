@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculate My Izzat - IZZAT METER 3000</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff8dc;
+    color: #333;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+  }
+  h1 {
+    text-align: center;
+    color: #ff4500;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+  }
+  select, input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #ffa500;
+    font-size: 16px;
+  }
+  button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 25px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #cc5200;
+  }
+  #result {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    color: #ff4500;
+  }
+</style>
+</head>
+<body>
+
+<h1>Calculate My Izzat - IZZAT METER 3000</h1>
+
+<form id="izzatForm">
+  <label for="gharLog">1. Aap ghar mein kitne log ho?</label>
+  <select id="gharLog" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5+</option>
+  </select>
+
+  <label for="position">2. Aap kaun ho ghar mein?</label>
+  <select id="position" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="Chhote">Chhote</option>
+    <option value="Middle">Middle</option>
+    <option value="Bade">Bade</option>
+    <option value="Father">Father</option>
+    <option value="Mother">Mother</option>
+  </select>
+
+  <label for="income">3. Aap kamate kitna ho? (₹ per month approx)</label>
+  <input type="number" id="income" min="0" placeholder="₹" required />
+
+  <label for="age">4. Aapki umar kya hai?</label>
+  <input type="number" id="age" min="1" max="120" placeholder="Saal" required />
+
+  <label for="daat">5. Last daat ya maar kab lagi thi?</label>
+  <select id="daat" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="Daily">Daily</option>
+    <option value="Under 7 days">Under 7 days</option>
+    <option value="Under 15 days">Under 15 days</option>
+    <option value="15+ days">15+ days</option>
+  </select>
+
+  <label for="suggestion">6. Apki suggestion se ghar mein last time kuch kaam hua tha?</label>
+  <select id="suggestion" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="Recently">Recently</option>
+    <option value="Yaad nahi">Yaad nahi</option>
+  </select>
+
+  <label for="profession">7. Aapka profession kya hai?</label>
+  <select id="profession" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="Job">Job</option>
+    <option value="Business">Business</option>
+    <option value="Part-time">Part-time</option>
+    <option value="Sirf Gyan Dena">Sirf Gyan Dena</option>
+  </select>
+
+  <label for="friends">8. Aapke kitne friends hain?</label>
+  <select id="friends" required>
+    <option value="" disabled selected>Choose...</option>
+    <option value="1-3">1-3</option>
+    <option value="4-6">4-6</option>
+    <option value="7-10">7-10</option>
+    <option value="10+">10+</option>
+  </select>
+
+  <button type="submit">Dekh Be Tri Izzat</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  document.getElementById('izzatForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    let izzat_score = 0;
+
+    const gharLog = document.getElementById('gharLog').value;
+    const position = document.getElementById('position').value;
+    const income = Number(document.getElementById('income').value);
+    const age = Number(document.getElementById('age').value);
+    const daat = document.getElementById('daat').value;
+    const suggestion = document.getElementById('suggestion').value;
+    const profession = document.getElementById('profession').value;
+    const friends = document.getElementById('friends').value;
+
+    // 1. Ghar ke log
+    if (gharLog === '1') izzat_score += 20;
+    else if (gharLog === '2') izzat_score += 15;
+    else if (gharLog === '3') izzat_score += 10;
+    else if (gharLog === '4') izzat_score += 5;
+    else izzat_score += 0;
+
+    // 2. Position
+    if (position === 'Father') izzat_score += 30;
+    else if (position === 'Mother') izzat_score += 25;
+    else if (position === 'Bade') izzat_score += 20;
+    else if (position === 'Middle') izzat_score += 10;
+    else izzat_score += 5; // Chhote
+
+    // 3. Income
+    if (income < 5000) izzat_score += 5;
+    else if (income < 20000) izzat_score += 10;
+    else if (income < 50000) izzat_score += 20;
+    else izzat_score += 30;
+
+    // 4. Age
+    if (age < 18) izzat_score += 5;
+    else if (age < 30) izzat_score += 15;
+    else izzat_score += 20;
+
+    // 5. Daat/Maar
+    if (daat === 'Daily') izzat_score += 0;
+    else if (daat === 'Under 7 days') izzat_score += 5;
+    else if (daat === 'Under 15 days') izzat_score += 10;
+    else izzat_score += 20; // 15+ days
+
+    // 6. Suggestion se kaam hua?
+    if (suggestion === 'Recently') izzat_score += 20;
+    else izzat_score += 5;
+
+    // 7. Profession
+    if (profession === 'Business') izzat_score += 30;
+    else if (profession === 'Job') izzat_score += 20;
+    else if (profession === 'Part-time') izzat_score += 10;
+    else izzat_score += 5; // Sirf Gyan Dena
+
+    // 8. Friends
+    if (friends === '1-3') izzat_score += 30;
+    else if (friends === '4-6') izzat_score += 20;
+    else if (friends === '7-10') izzat_score += 10;
+    else izzat_score += 5; // 10+
+
+    // Calculate percentage (out of 200)
+    const izzat_percent = (izzat_score / 200) * 100;
+    let message = '';
+
+    if (izzat_percent <= 30) {
+      message = "Kya re bikhmangaya kya dikhraha hai? Abhi toh izzat lene ka time nahi!";
+    } else if (izzat_percent <= 50) {
+      message = "Yye kya izzat hai re teri? Thodi mehnat kar bhai.";
+    } else if (izzat_percent <= 70) {
+      message = "Izzat thodi hai lekin aukaat zameen pe hai.";
+    } else {
+      message = "Waah, itni izzat to apun ki 100 crore janam mein bhi nahi ho sakti!";
+    }
+
+    document.getElementById('result').innerHTML = 
+      `<p>Teri Izzat Score: <strong>${izzat_percent.toFixed(1)}%</strong></p><p>${message}</p>`;
+  });
+</script>
+
+</body>
+</html>
