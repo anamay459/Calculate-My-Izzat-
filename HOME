@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculate My Izzat</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { color: #d22; }
+    label { display: block; margin: 15px 0 5px; }
+    select, input { width: 200px; padding: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; background: #d22; color: white; border: none; cursor: pointer; }
+    #result { margin-top: 25px; font-weight: bold; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Calculate My Izzat</h1>
+
+  <label>Aap ghar me kitne log hoo?</label>
+  <select id="logCount">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5+</option>
+  </select>
+
+  <label>Aap ka rishta kya hai?</label>
+  <select id="relation">
+    <option value="chote">Chote</option>
+    <option value="middle">Middle</option>
+    <option value="bade">Bade</option>
+    <option value="father">Father</option>
+    <option value="mother">Mother</option>
+  </select>
+
+  <label>Aap kamate kitna ho (₹)?</label>
+  <input type="number" id="income" min="0" placeholder="₹" />
+
+  <label>Aapki umar kya hai?</label>
+  <input type="number" id="age" min="1" placeholder="Age in years" />
+
+  <label>Last daat yaa maar kab padithi?</label>
+  <select id="lastFight">
+    <option value="daily">Daily</option>
+    <option value="under7">Under 7 days</option>
+    <option value="under15">Under 15 days</option>
+    <option value="over15">15+ days</option>
+  </select>
+
+  <label>Apki sugestion se ghar me last time kuch kaam hua tha?</label>
+  <select id="lastWork">
+    <option value="recently">Recently</option>
+    <option value="dontRemember">Yaad nahi hai</option>
+  </select>
+
+  <label>Aapka profession kya hai?</label>
+  <select id="profession">
+    <option value="job">Job</option>
+    <option value="business">Business</option>
+    <option value="parttime">Part Time</option>
+    <option value="gyan">Sirf Gyan Dena</option>
+  </select>
+
+  <label>Apke kitne friends hain?</label>
+  <select id="friends">
+    <option value="1-3">1-3</option>
+    <option value="4-6">4-6</option>
+    <option value="7-10">7-10</option>
+    <option value="10+">10+</option>
+  </select>
+
+  <button onclick="calculateIzzat()">Dekho Bhai, Izzat Kya Hai</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateIzzat() {
+      const logCount = document.getElementById('logCount').value;
+      const relation = document.getElementById('relation').value;
+      const income = Number(document.getElementById('income').value);
+      const age = Number(document.getElementById('age').value);
+      const lastFight = document.getElementById('lastFight').value;
+      const lastWork = document.getElementById('lastWork').value;
+      const profession = document.getElementById('profession').value;
+      const friends = document.getElementById('friends').value;
+
+      if (!income || !age) {
+        alert('Bhai, income aur age dono bharna zaroori hai!');
+        return;
+      }
+
+      // Simple scoring logic:
+      let score = 0;
+
+      // Log count: zyada log, zyada izzat
+      score += logCount == '5' ? 10 : Number(logCount) * 2;
+
+      // Relation weight
+      const relationScores = {
+        chote: 5,
+        middle: 7,
+        bade: 9,
+        father: 15,
+        mother: 15
+      };
+      score += relationScores[relation] || 0;
+
+      // Income score (₹)
+      if (income < 10000) score += 5;
+      else if (income < 50000) score += 15;
+      else score += 25;
+
+      // Age score: mature age zyada izzat
+      if (age < 18) score += 5;
+      else if (age < 40) score += 15;
+      else score += 20;
+
+      // Last fight penalty: jitni kam fight, utni achhi izzat
+      const fightScores = {
+        daily: -10,
+        under7: 0,
+        under15: 5,
+        over15: 10
+      };
+      score += fightScores[lastFight] || 0;
+
+      // Last work in house - recently ka thoda bonus
+      score += lastWork === 'recently' ? 10 : 0;
+
+      // Profession score
+      const profScores = {
+        job: 15,
+        business: 20,
+        parttime: 5,
+        gyan: 0
+      };
+      score += profScores[profession] || 0;
+
+      // Friends penalty (more friends = less izzat)
+      const friendsScores = {
+        '1-3': 15,
+        '4-6': 10,
+        '7-10': 5,
+        '10+': 0
+      };
+      score += friendsScores[friends] || 0;
+
+      // Calculate percentage izzat max score assumed 120
+      let izzatPercent = Math.round((score / 120) * 100);
+      if (izzatPercent < 0) izzatPercent = 0;
+      if (izzatPercent > 100) izzatPercent = 100;
+
+      let message = '';
+      if (izzatPercent <= 30) {
+        message = "Kya re bikhmangaya? Kya dikhraha hai!";
+      } else if (izzatPercent <= 50) {
+        message = "Yye kya izzat hai re teri?";
+      } else if (izzatPercent <= 70) {
+        message = "Izzat thodi hai lekin aukat zamin pe hai.";
+      } else {
+        message = "Waah, itni izzat to apun ki 100cr janam me bhi nahi ho sakti!";
+      }
+
+      document.getElementById('result').innerHTML = `<p>Izzat: ${izzatPercent}%</p><p>${message}</p>`;
+    }
+  </script>
+</body>
+</html>
